@@ -1,5 +1,5 @@
 import React from 'react';
-import logo from './logo.svg';
+
 import './App.css';
 import Customer from './components/Customer'
 import Paper from '@material-ui/core/Paper'
@@ -9,13 +9,14 @@ import TableBody from '@material-ui/core/TableBody'
 import TableRow from '@material-ui/core/TableRow'
 import TableCell from '@material-ui/core/TableCell'
 import withStyles from '@material-ui/core/styles/withStyles'
+import Test from './components/Test'
 
 
 
-var styles = theme=>({
+const styles = theme=>({
   root:{
     width:'100%',
-    marginTop: theme.spacing(3),
+    marginTop: theme.spacing(10),
     overflowX:"auto",
   },
   table:{
@@ -91,7 +92,10 @@ class App extends React.Component {
         
     </TableBody>
     </Table>
+    <Test></Test>
     </Paper>
+  
+    
   );
  }
 }
