@@ -8,12 +8,15 @@ import TableHead from '@material-ui/core/TableHead'
 import TableBody from '@material-ui/core/TableBody'
 import TableRow from '@material-ui/core/TableRow'
 import TableCell from '@material-ui/core/TableCell'
-import withStyles from '@material-ui/core/styles/withStyles'
+// import { makeStyles } from '@material-ui/core/styles/'
+import { withStyles } from '@material-ui/core/styles/'
+
 import Test from './components/Test'
+import CircularProgress from '@material-ui/core/CircularProgress'
 
 
 
-const styles = theme=>({
+const styles = theme => ({
   root:{
     width:'100%',
     marginTop: theme.spacing(10),
@@ -21,24 +24,50 @@ const styles = theme=>({
   },
   table:{
     minWidth:1080
+  },
+  progress: {
+    margin:theme.spacing(2),
   }
+
 })
+  
+
+/*
+1)constructor()
+
+2)componentWillMount()
+
+3)render()
+
+4)componentDidMount()
+
+props or state => shouldComponentUpdate()
+*/
 
 class App extends React.Component {
   state={
-    customers:""
+    customers:"",
+    completed:0,
   }
   componentDidMount(){
+    this.timer = setInterval(this.progress, 20);
     this.callApi()
     .then(res=>this.setState({customers: res}))
+
+    //NOTE: this.callApi() 를 주석 처리하면 loading화면 확인 할 수 있다.
   }
   callApi=async()=>{
     const response = await fetch('api/customers');
     const body = await response.json();
     return body
   }
+
+  progress = () => {
+    const { completed } = this.state;
+    this.setState({ completed: completed>= 100 ? 0 : completed+1})
+  }
   render() {
-  var {classes} = this.props;
+  const {classes} = this.props;
   return (
     <Paper className={classes.root}>
     <Table className={classes.table}>
@@ -70,7 +99,12 @@ class App extends React.Component {
             ></Customer>
           )
           
-        }) : ""
+        }) : 
+        <TableRow>
+          <TableCell colSpan="6" align="center">
+            <CircularProgress className={classes.progress} variant="determinate" value={this.state.completed} />
+          </TableCell>
+        </TableRow>
         }
         
     </TableBody>
